@@ -1,0 +1,114 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>AI Resume Screening System</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="{{ url_for('static', filename='css/style.css') }}" rel="stylesheet">
+</head>
+<body>
+
+<div class="wrap">
+  <nav class="nav">
+    <a class="brand" href="/">
+      <svg width="22" height="22" viewBox="0 0 24 24" fill="none">
+        <rect x="3" y="2" width="14" height="20" rx="2" stroke="#f2b705" stroke-width="1.6"/>
+        <path d="M7 7h6M7 11h6M7 15h3" stroke="#f2b705" stroke-width="1.6" stroke-linecap="round"/>
+        <path d="M16 16l4 4" stroke="#2dd4bf" stroke-width="1.6" stroke-linecap="round"/>
+        <circle cx="18" cy="14" r="3" stroke="#2dd4bf" stroke-width="1.6"/>
+      </svg>
+      AI Resume Screening
+    </a>
+    <div class="nav-links">
+      <a href="/" class="active">Home</a>
+      <a href="/history">History</a>
+    </div>
+  </nav>
+
+  <section class="hero">
+    <div>
+      <span class="eyebrow">AI-Powered Screening</span>
+      <h1>See exactly how your resume measures up.</h1>
+      <p class="lede">Upload a resume and paste a job description — get a match score, the skills you share, and the ones you're missing, in seconds.</p>
+
+      <div class="card" style="padding: 32px;">
+        <form action="/analyze" method="POST" enctype="multipart/form-data">
+          <div class="field">
+            <label for="resume">Resume</label>
+            <label class="dropzone" id="dropzone" for="resume">
+              <svg class="dz-icon" width="28" height="28" viewBox="0 0 24 24" fill="none">
+                <path d="M12 16V4M12 4l-4 4M12 4l4 4" stroke="#f2b705" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round"/>
+                <path d="M4 16v2a2 2 0 002 2h12a2 2 0 002-2v-2" stroke="#f2b705" stroke-width="1.6" stroke-linecap="round"/>
+              </svg>
+              <div class="dz-text">Drop your resume PDF here, or click to browse</div>
+              <div class="dz-filename" id="dz-filename"></div>
+              <input type="file" id="resume" name="resume" accept=".pdf" required>
+            </label>
+          </div>
+
+          <div class="field">
+            <label for="job_description">Job description</label>
+            <textarea id="job_description" name="job_description" rows="6" placeholder="Paste the job description here..." required></textarea>
+          </div>
+
+          <button type="submit" class="btn btn-primary">Analyze Resume →</button>
+        </form>
+      </div>
+    </div>
+
+    <div>
+      <svg class="scan-illustration" viewBox="0 0 320 400" fill="none" aria-hidden="true">
+        <defs>
+          <linearGradient id="beamGrad" x1="0" y1="0" x2="0" y2="1">
+            <stop offset="0%" stop-color="#f2b705" stop-opacity="0"/>
+            <stop offset="50%" stop-color="#f2b705" stop-opacity="1"/>
+            <stop offset="100%" stop-color="#f2b705" stop-opacity="0"/>
+          </linearGradient>
+        </defs>
+        <rect x="20" y="20" width="280" height="360" rx="18" fill="#161420" stroke="#2a2638" stroke-width="2"/>
+        <rect x="48" y="56" width="110" height="14" rx="4" fill="#2a2638"/>
+        <rect x="48" y="84" width="224" height="7" rx="3" fill="#221f30"/>
+        <rect x="48" y="100" width="200" height="7" rx="3" fill="#221f30"/>
+        <rect x="48" y="116" width="210" height="7" rx="3" fill="#221f30"/>
+        <rect x="48" y="148" width="80" height="22" rx="11" fill="rgba(45,212,191,0.18)" stroke="#2dd4bf" stroke-width="1"/>
+        <rect x="138" y="148" width="64" height="22" rx="11" fill="rgba(45,212,191,0.18)" stroke="#2dd4bf" stroke-width="1"/>
+        <rect x="48" y="190" width="224" height="7" rx="3" fill="#221f30"/>
+        <rect x="48" y="206" width="180" height="7" rx="3" fill="#221f30"/>
+        <rect x="48" y="222" width="200" height="7" rx="3" fill="#221f30"/>
+        <rect x="48" y="254" width="90" height="22" rx="11" fill="rgba(255,107,107,0.14)" stroke="#ff6b6b" stroke-width="1"/>
+        <rect x="48" y="296" width="224" height="7" rx="3" fill="#221f30"/>
+        <rect x="48" y="312" width="160" height="7" rx="3" fill="#221f30"/>
+        <rect x="32" y="20" width="256" height="10" rx="5" class="scan-beam" fill="url(#beamGrad)"/>
+      </svg>
+    </div>
+  </section>
+</div>
+
+<script>
+  const input = document.getElementById('resume');
+  const dz = document.getElementById('dropzone');
+  const filenameEl = document.getElementById('dz-filename');
+
+  input.addEventListener('change', () => {
+    filenameEl.textContent = input.files.length ? input.files[0].name : '';
+  });
+
+  ['dragover'].forEach(evt => {
+    dz.addEventListener(evt, (e) => { e.preventDefault(); dz.classList.add('is-dragover'); });
+  });
+  ['dragleave', 'drop'].forEach(evt => {
+    dz.addEventListener(evt, () => dz.classList.remove('is-dragover'));
+  });
+  dz.addEventListener('drop', (e) => {
+    e.preventDefault();
+    if (e.dataTransfer.files.length) {
+      input.files = e.dataTransfer.files;
+      filenameEl.textContent = input.files[0].name;
+    }
+  });
+</script>
+
+</body>
+</html>

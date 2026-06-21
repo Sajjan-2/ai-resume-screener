@@ -1,0 +1,73 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Screening History</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="{{ url_for('static', filename='css/style.css') }}" rel="stylesheet">
+</head>
+<body>
+
+<div class="wrap">
+  <nav class="nav">
+    <a class="brand" href="/">
+      <svg width="22" height="22" viewBox="0 0 24 24" fill="none">
+        <rect x="3" y="2" width="14" height="20" rx="2" stroke="#f2b705" stroke-width="1.6"/>
+        <path d="M7 7h6M7 11h6M7 15h3" stroke="#f2b705" stroke-width="1.6" stroke-linecap="round"/>
+        <path d="M16 16l4 4" stroke="#2dd4bf" stroke-width="1.6" stroke-linecap="round"/>
+        <circle cx="18" cy="14" r="3" stroke="#2dd4bf" stroke-width="1.6"/>
+      </svg>
+      AI Resume Screening
+    </a>
+    <div class="nav-links">
+      <a href="/">Home</a>
+      <a href="/history" class="active">History</a>
+    </div>
+  </nav>
+
+  <div class="card history-card" style="margin-bottom: 80px;">
+    <h2>Screening History</h2>
+
+    <div class="table-scroll">
+      <table class="history-table">
+        <thead>
+          <tr>
+            <th>#</th>
+            <th>Resume</th>
+            <th>Match Score</th>
+            <th>Matched Skills</th>
+            <th>Missing Skills</th>
+            <th>Date</th>
+          </tr>
+        </thead>
+        <tbody>
+          {% for row in records %}
+          {% if row.match_score >= 75 %}{% set bar_color = '#2dd4bf' %}{% elif row.match_score >= 50 %}{% set bar_color = '#f2b705' %}{% else %}{% set bar_color = '#ff6b6b' %}{% endif %}
+          <tr>
+            <td>{{ row.id }}</td>
+            <td>{{ row.resume_name }}</td>
+            <td>
+              <div class="score-cell">
+                <div class="score-bar-track">
+                  <div class="score-bar-fill" style="width: {{ row.match_score }}%; background: {{ bar_color }};"></div>
+                </div>
+                <span class="score-num">{{ row.match_score }}%</span>
+              </div>
+            </td>
+            <td>{{ row.matched_skills }}</td>
+            <td>{{ row.missing_skills }}</td>
+            <td style="color: var(--text-muted);">{{ row.created_at }}</td>
+          </tr>
+          {% else %}
+          <tr><td colspan="6"><div class="empty-state">No screenings yet — analyze a resume to see it here.</div></td></tr>
+          {% endfor %}
+        </tbody>
+      </table>
+    </div>
+  </div>
+</div>
+
+</body>
+</html>
