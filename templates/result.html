@@ -1,7 +1,15 @@
 {% set circumference = 452.4 %}
 {% set offset = circumference - (circumference * score / 100) %}
-{% if score >= 75 %}{% set gauge_color = '#2dd4bf' %}{% elif score >= 50 %}{% set gauge_color = '#f2b705' %}{% else %}{% set gauge_color = '#ff6b6b' %}{% endif %}
+{% if score >= 75 %}
+{% set gauge_color = '#2dd4bf' %}
+{% elif score >= 50 %}
+{% set gauge_color = '#f2b705' %}
+{% else %}
+{% set gauge_color = '#ff6b6b' %}
+{% endif %}
+
 <!DOCTYPE html>
+
 <html lang="en">
 <head>
 <meta charset="UTF-8">
@@ -24,10 +32,13 @@
       </svg>
       AI Resume Screening
     </a>
-    <div class="nav-links">
-      <a href="/">Home</a>
-      <a href="/history">History</a>
-    </div>
+
+```
+<div class="nav-links">
+  <a href="/">Home</a>
+</div>
+```
+
   </nav>
 
   <div class="card" style="margin-bottom: 80px;">
@@ -35,71 +46,112 @@
       <div class="gauge-wrap">
         <svg width="160" height="160" viewBox="0 0 160 160" class="gauge-ring">
           <circle cx="80" cy="80" r="72" fill="none" stroke="#221f30" stroke-width="12"/>
-          <circle class="fg" cx="80" cy="80" r="72" fill="none" stroke="{{ gauge_color }}" stroke-width="12"
-            stroke-linecap="round" stroke-dasharray="{{ circumference }}" stroke-dashoffset="{{ circumference }}"
-            transform="rotate(-90 80 80)" data-final-offset="{{ offset }}"/>
+          <circle
+            class="fg"
+            cx="80"
+            cy="80"
+            r="72"
+            fill="none"
+            stroke="{{ gauge_color }}"
+            stroke-width="12"
+            stroke-linecap="round"
+            stroke-dasharray="{{ circumference }}"
+            stroke-dashoffset="{{ circumference }}"
+            transform="rotate(-90 80 80)"
+            data-final-offset="{{ offset }}">
+          </circle>
         </svg>
-        <div class="gauge-score">
-          <span class="num">{{ score }}%</span>
-          <span class="label">Match Score</span>
-        </div>
-      </div>
-      <div>
-        <span class="eyebrow">Screening Complete</span>
-        <h1 style="font-family: var(--font-display); font-size: 1.7rem; margin: 6px 0 4px;">{{ filename }}</h1>
-        <p style="color: var(--text-muted); margin: 0;">Here's how this resume stacks up against the job description.</p>
-      </div>
-    </div>
 
-    <div class="stat-row">
-      <div class="stat-chip">
-        <div class="stat-num">{{ skill_score }}%</div>
-        <div class="stat-label">Skill match — exact keyword overlap</div>
-      </div>
-      <div class="stat-chip">
-        <div class="stat-num">{{ similarity_score }}%</div>
-        <div class="stat-label">Text similarity — TF-IDF cosine score</div>
-      </div>
+```
+    <div class="gauge-score">
+      <span class="num">{{ score }}%</span>
+      <span class="label">Match Score</span>
     </div>
+  </div>
 
-    <div class="skill-section">
-      <div class="skill-block">
-        <h3><span class="dot matched"></span> Matched Skills</h3>
-        <div class="pill-grid">
-          {% for skill in matched %}<span class="pill matched">{{ skill }}</span>{% else %}<span class="pill neutral">None</span>{% endfor %}
-        </div>
-      </div>
-      <div class="skill-block">
-        <h3><span class="dot missing"></span> Missing Skills</h3>
-        <div class="pill-grid">
-          {% for skill in missing %}<span class="pill missing">{{ skill }}</span>{% else %}<span class="pill neutral">None</span>{% endfor %}
-        </div>
-      </div>
-      <div class="skill-block">
-        <h3><span class="dot all"></span> Resume Skills</h3>
-        <div class="pill-grid">
-          {% for skill in resume_skills %}<span class="pill neutral">{{ skill }}</span>{% else %}<span class="pill neutral">None</span>{% endfor %}
-        </div>
-      </div>
-    </div>
+  <div>
+    <span class="eyebrow">Screening Complete</span>
+    <h1 style="font-family: var(--font-display); font-size: 1.7rem; margin: 6px 0 4px;">
+      {{ filename }}
+    </h1>
+    <p style="color: var(--text-muted); margin: 0;">
+      Here's how this resume stacks up against the job description.
+    </p>
+  </div>
+</div>
 
-    <div class="actions">
-      <a href="/" class="btn btn-ghost">← Screen another resume</a>
-      <a href="/history" class="btn btn-ghost">View history</a>
+<div class="stat-row">
+  <div class="stat-chip">
+    <div class="stat-num">{{ skill_score }}%</div>
+    <div class="stat-label">Skill match — exact keyword overlap</div>
+  </div>
+
+  <div class="stat-chip">
+    <div class="stat-num">{{ similarity_score }}%</div>
+    <div class="stat-label">Text similarity — TF-IDF cosine score</div>
+  </div>
+</div>
+
+<div class="skill-section">
+
+  <div class="skill-block">
+    <h3><span class="dot matched"></span> Matched Skills</h3>
+    <div class="pill-grid">
+      {% for skill in matched %}
+        <span class="pill matched">{{ skill }}</span>
+      {% else %}
+        <span class="pill neutral">None</span>
+      {% endfor %}
     </div>
+  </div>
+
+  <div class="skill-block">
+    <h3><span class="dot missing"></span> Missing Skills</h3>
+    <div class="pill-grid">
+      {% for skill in missing %}
+        <span class="pill missing">{{ skill }}</span>
+      {% else %}
+        <span class="pill neutral">None</span>
+      {% endfor %}
+    </div>
+  </div>
+
+  <div class="skill-block">
+    <h3><span class="dot all"></span> Resume Skills</h3>
+    <div class="pill-grid">
+      {% for skill in resume_skills %}
+        <span class="pill neutral">{{ skill }}</span>
+      {% else %}
+        <span class="pill neutral">None</span>
+      {% endfor %}
+    </div>
+  </div>
+
+</div>
+
+<div class="actions">
+  <a href="/" class="btn btn-ghost">← Screen another resume</a>
+</div>
+```
+
   </div>
 </div>
 
 <script>
   window.addEventListener('load', () => {
     const fg = document.querySelector('.gauge-ring .fg');
+
     if (fg) {
       const final = fg.getAttribute('data-final-offset');
-      requestAnimationFrame(() => { fg.style.strokeDashoffset = final; });
+
+      requestAnimationFrame(() => {
+        fg.style.strokeDashoffset = final;
+      });
     }
   });
 </script>
 
 </body>
 </html>
+
 
