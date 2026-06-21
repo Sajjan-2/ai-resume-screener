@@ -30,6 +30,10 @@ def analyze():
 
     # Save uploaded PDF
     filename = resume.filename
+
+    # Create uploads folder if it doesn't exist
+    os.makedirs("uploads", exist_ok=True)
+
     file_path = os.path.join("uploads", filename)
     resume.save(file_path)
 
