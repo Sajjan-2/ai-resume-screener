@@ -9,7 +9,6 @@ from utils.matcher import (
     calculate_text_similarity,
     calculate_final_score,
 )
-from utils.db import save_result, get_all_results
 
 app = Flask(__name__)
 
@@ -50,20 +49,11 @@ def analyze():
     # Extract skills from job description
     job_skills = extract_skills(job_description)
 
-    # Calculate match score
+    # Calculate scores
     matched_skills, missing_skills = calculate_match(found_skills, job_skills)
     skill_score = calculate_skill_score(matched_skills, job_skills)
     similarity_score = calculate_text_similarity(text, job_description)
     match_score = calculate_final_score(skill_score, similarity_score)
-
-    # Save this screening result into MySQL
-    save_result(
-        resume_name=filename,
-        match_score=match_score,
-        matched_skills=matched_skills,
-        missing_skills=missing_skills,
-        resume_skills=found_skills,
-    )
 
     return render_template(
         "result.html",
@@ -75,13 +65,6 @@ def analyze():
         resume_skills=found_skills,
         filename=filename
     )
-
-
-# Screening History
-@app.route('/history')
-def history():
-    records = get_all_results()
-    return render_template("history.html", records=records)
 
 
 if __name__ == '__main__':
